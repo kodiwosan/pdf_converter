@@ -33,8 +33,19 @@ def main():
             print("Invalid input. Please enter a number.")
 
     print(f"\nSelected: {target_window}")
+
+    # オプション選択
+    use_ocr = input("Enable OCR (Japanese)? (y/n): ").lower() == "y"
+
+    crop_input = input("Cropping mode? (a: auto, m: manual, n: none) [n]: ").lower()
+    crop_mode = "none"
+    if crop_input == "a":
+        crop_mode = "auto"
+    elif crop_input == "m":
+        crop_mode = "manual"
+
     converter = KindleConverter(window_title=target_window)
-    converter.run()
+    converter.run(use_ocr=use_ocr, crop_mode=crop_mode)
 
 
 if __name__ == "__main__":
