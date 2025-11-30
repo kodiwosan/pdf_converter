@@ -307,11 +307,23 @@ class KindleConverter:
                     # 期待されるPDFパス
                     pdf_path = output_base + ".pdf"
 
-                    # CLIコマンド: tesseract <image> <output_base> -l <lang> pdf
-                    cmd = [tesseract_cmd, img_path, output_base, "-l", lang, "pdf"]
+                    # CLIコマンド: tesseract <image> <output_base> -l <lang> --psm 6 -c preserve_interword_spaces=1 pdf
+                    cmd = [
+                        tesseract_cmd,
+                        img_path,
+                        output_base,
+                        "-l",
+                        lang,
+                        "--psm",
+                        "6",
+                        "-c",
+                        "preserve_interword_spaces=1",
+                        "pdf",
+                    ]
 
                     try:
                         # CLI実行
+                        print(f"Debug: Running command: {' '.join(cmd)}")
                         subprocess.run(
                             cmd,
                             check=True,
@@ -321,8 +333,6 @@ class KindleConverter:
 
                         # ファイル生成確認
                         if not os.path.exists(pdf_path):
-                            # Tesseractのバージョンによっては.pdfがつかない、あるいは別の名前になる可能性も考慮
-                            # しかし通常は output_base.pdf になる
                             print(f"Warning: Expected PDF not found at {pdf_path}")
                             continue
 
